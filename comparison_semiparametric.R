@@ -495,7 +495,7 @@ B=100  # number of bootstrap samples for estimating variance of m
 boot_results=bootstrap(Data1,Data2,ivars,lvars,est_beta1,est_gamma1,est_beta2,est_gamma2,z,B)
 
 # vector of standard errors for m conditional on each covariate value using bootstrap
-sd=apply(boot_results,1,sd)
+sds=apply(boot_results,1,sd)
 
 #######################
 # Asymptotic approach #
@@ -505,14 +505,14 @@ sd=apply(boot_results,1,sd)
 
 as_pval=rep(NA,(dim(z)[1]))
 for(j in 1:(dim(z)[1])){
-  as_pval[j]=2*(1-pnorm(abs(m[j]/sd[j])))
+  as_pval[j]=2*(1-pnorm(abs(m[j]/sds[j])))
 }
 
 # asymptotic 95% CI for m
 as_CI=matrix(0,dim(z)[1],2)
 for(j in 1:(dim(z)[1])){
-  as_CI[j,1]=m[j]-qnorm(0.975)*sd[j]
-  as_CI[j,2]=m[j]+qnorm(0.975)*sd[j]
+  as_CI[j,1]=m[j]-qnorm(0.975)*sds[j]
+  as_CI[j,2]=m[j]+qnorm(0.975)*sds[j]
 }
 
 ########################
@@ -549,13 +549,13 @@ for(j in 1:(dim(z)[1])){
 # pvalue with permutation approach for testing H0: m_z=0 aginst H1: m_z!=0
 perm_pval=rep(NA,dim(z)[1])
 for(j in 1:dim(z)[1]){
-  perm_pval[j]=(length(which(m_p[j,]/sd_p[j,]<(-abs(m[j]/sd[j]))))+length(which(m_p[j,]/sd_p[j,]>abs(m[j]/sd[j]))))/K
+  perm_pval[j]=(length(which(m_p[j,]/sd_p[j,]<(-abs(m[j]/sds[j]))))+length(which(m_p[j,]/sd_p[j,]>abs(m[j]/sds[j]))))/K
 }
 
 # 95% CI for m with permutation approach
 perm_CI=matrix(0,dim(z)[1],2)
 for(j in 1:(dim(z)[1])){
- perm_CI[j,1]=m[j]-quantiles[j,7]*sd[j]
- perm_CI[j,2]=m[j]-quantiles[j,1]*sd[j]
+ perm_CI[j,1]=m[j]-quantiles[j,7]*sds[j]
+ perm_CI[j,2]=m[j]-quantiles[j,1]*sds[j]
 }
 
