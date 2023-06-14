@@ -1,22 +1,22 @@
 library(smcure) # for the data
 library(bpcp)   # for the test for difference of survival probabilities 
 
-###################################################################
-# unconditional comparison of mean survival times for the uncured #
-###################################################################
+#####################################################################
+# comparison of mean survival times for the uncured (nonparametric) #
+#####################################################################
 
 
 # Input: Data1, Data2 - two datasets (corresponding to the two groups to be compared), 
 #                       first column is survival time, second column is censoring indicator
-#           cure_comp - logical: if TRUE computes also parameters related to the cure component
+#                       cure_comp - logical: if TRUE computes also parameters related to the cure component
 # Output: m - difference in mean survival time for the uncured
-#       var - sigma^2 in corollary 1 of the draft: asymptotic variance of a_n(hat_m-m)
+#       var - asymptotic variance of a_n(hat_m-m)
 #       If cure_comp==TRUE returns also:
 #       p1  - cure fraction in sample 1
 #       p2  - cure fraction in sample 2
-#     CI1 - 95% CI for p1
-#     CI2 - 95% CI for p2
-#    pval - p-val for testing H0: p1=p2 against H1: p1!=p2
+#       CI1 - 95% CI for p1
+#       CI2 - 95% CI for p2
+#      pval - p-val for testing H0: p1=p2 against H1: p1!=p2
 
 estimation=function(Data1,Data2,cure_comp){
   
@@ -159,8 +159,6 @@ estimation=function(Data1,Data2,cure_comp){
 #######################
 
 
-# this part is to be changed for analyzing other data
-
 data(e1684)  
 d=na.omit(e1684) 
 
@@ -179,10 +177,10 @@ n2=dim(Data2)[1]
 cens_rate_1=length(which(Data1$status==0))/n1 
 cens_rate_2=length(which(Data2$status==0))/n2
 
-Y_r1=max(Data1$Y[which(Data1$status==1)]) #maximum observed event time
+Y_r1=max(Data1$Y[which(Data1$status==1)]) # maximum observed event time
 Y_r2=max(Data2$Y[which(Data2$status==1)])
 
-plateau_1=length(which(Data1$Y>Y_r1))/n1 # percentage of observations in the plateau
+plateau_1=length(which(Data1$Y>Y_r1))/n1  # percentage of observations in the plateau
 plateau_2=length(which(Data2$Y>Y_r2))/n2
 
 ##############
