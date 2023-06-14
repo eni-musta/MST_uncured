@@ -30,6 +30,8 @@ status=Data_breast[,2]   # censoring status:  censored (status=0), noncensored (
 X=Data_breast[,c(3:6)]
 Z=Data_breast[,c(3:6)]   
 
+# Divide the two groups that will be compared 
+
 # ER+
 Data1=data.frame(Y=Y[X[,2]==1], status=status[X[,2]==1], age=Data_breast$age[X[,2]==1], sizeTum=Data_breast$sizeTum[X[,2]==1])
 # ER-
