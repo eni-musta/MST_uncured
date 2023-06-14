@@ -4,7 +4,7 @@ library(smcure)
 # conditional comparison of mean survival times for the uncured   #
 ###################################################################
 
-# start required functions 
+# load required functions 
 
 # the four following functions are from the smcure package for the logistic-Cox cure model (with small modifications)
 
@@ -294,18 +294,18 @@ cure_CI=function (lvars, ivars, data1,data2,
 # Input: Data1, Data2 - two datasets (corresponding to the two groups to be compared), 
 #                       first column is survival time ("Y"), second column is censoring indicator ("status"), then other covariates
 #       ivars, lvars  - names of covariates that are used in the incidence and latency components
-#                  x,z  - matrix of covariate values (for incidence and latency) on which we condition, each row is a different choice of covariates, ncol is equal to the number of cov for the latency model
+#                x,z  - matrix of covariate values (for incidence and latency) on which we condition, each row is a different choice of covariates, ncol is equal to the number of cov for the latency model
 #           cure_comp - logical: if TRUE computes also parameters related to the cure component
 #      beta.hat1,gamma.hat1,beta.hat2,gamma.hat2 - initial estimates for the parameters of the two models, can also be NULL
 
 # Output:  m - a vector containing the difference in mean survival time for the uncured conditionally on each covariate
 #         conv1, conv2 - logical showing whether EM algorithm converged
 #         g1,b1,g2,b2 - estimates of the parameters
-#        If cure_comp==TRUE returns also:
-#        p1  - cure probability in sample 1 conditional on x
-#        p2  - cure probability in sample 2 conditional on x
-#        p_CI_1 - 95% CI for p1 using bootstrap
-#        p_CI_2 - 95% CI for p2 using bootstrap
+#         If cure_comp==TRUE returns also:
+#            p1  - cure probability in sample 1 conditional on x
+#            p2  - cure probability in sample 2 conditional on x
+#            p_CI_1 - 95% CI for p1 using bootstrap
+#            p_CI_2 - 95% CI for p2 using bootstrap
 
 estimation=function(Data1,Data2,ivars,lvars,z,x,cure_comp,beta.hat1,gamma.hat1,beta.hat2,gamma.hat2){
   
@@ -425,8 +425,6 @@ bootstrap=function(Data1,Data2,ivars,lvars,b1,g1,b2,g2,z,B){
 # Example smcure data #
 #######################
 
-# this part is to be changed for analyzing other data
-
 data(e1684)  
 d=na.omit(e1684) 
 
@@ -454,7 +452,7 @@ z=rbind(z,c(-20,1))
 # matrix of covariate values on which we condition for the incidence, 
 x=z
 
-
+#############################################################################
 # the code below is standard (not depending on the dataset)
 # preliminary analysis of the data
 
@@ -464,10 +462,10 @@ n2=dim(Data2)[1]
 cens_rate_1=length(which(Data1$status==0))/n1 
 cens_rate_2=length(which(Data2$status==0))/n2
 
-Y_r1=max(Data1$Y[which(Data1$status==1)]) #maximum observed event time
+Y_r1=max(Data1$Y[which(Data1$status==1)]) # maximum observed event time
 Y_r2=max(Data2$Y[which(Data2$status==1)])
 
-plateau_1=length(which(Data1$Y>Y_r1))/n1 # percentage of observations in the plateau
+plateau_1=length(which(Data1$Y>Y_r1))/n1  # percentage of observations in the plateau
 plateau_2=length(which(Data2$Y>Y_r2))/n2
 
 
@@ -505,8 +503,6 @@ sd=apply(boot_results,1,sd)
 
 # asymptotic pvalue for testing H0: m_z=0 aginst H1: m_z!=0
 
-#k=sqrt(n1*n2/(n1+n2))
-
 as_pval=rep(NA,(dim(z)[1]))
 for(j in 1:(dim(z)[1])){
   as_pval[j]=2*(1-pnorm(abs(m[j]/sd[j])))
@@ -515,8 +511,8 @@ for(j in 1:(dim(z)[1])){
 # asymptotic 95% CI for m
 as_CI=matrix(0,dim(z)[1],2)
 for(j in 1:(dim(z)[1])){
-  as_CI[j,1]=m[j]-qnorm(0.975)*sd[j]#/k
-  as_CI[j,2]=m[j]+qnorm(0.975)*sd[j]#/k
+  as_CI[j,1]=m[j]-qnorm(0.975)*sd[j]
+  as_CI[j,2]=m[j]+qnorm(0.975)*sd[j]
 }
 
 ########################
