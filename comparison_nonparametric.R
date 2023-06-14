@@ -204,16 +204,16 @@ p_val_cure=est_res$pval
 
 # comparison of mean survival times for the uncured 
 m=est_res$m
-sd=sqrt(est_res$var)
+sds=sqrt(est_res$var)
 
 k=sqrt(n1*n2/(n1+n2))
 
 # asymptotic pvalue for testing H0: m=0 aginst H1: m!=0
-as_pval=2*(1-pnorm(abs(m*k/sd)))
+as_pval=2*(1-pnorm(abs(m*k/sds)))
 
 #asymptotic 95% CI for m
-m+qnorm(0.975)*sd/k
-m-qnorm(0.975)*sd/k
+m+qnorm(0.975)*sds/k
+m-qnorm(0.975)*sds/k
 
 ########################
 # Permutation approach #
@@ -245,8 +245,8 @@ quantiles=c(quantile(na.omit(m_p/sd_p),q))
 
 
 # pvalue with permutation approach for testing H0: m=0 aginst H1: m!=0
-perm_pval=(length(which(m_p/sd_p<(-abs(m/sd))))+length(which(m_p/sd_p>abs(m/sd))))/K
+perm_pval=(length(which(m_p/sd_p<(-abs(m/sds))))+length(which(m_p/sd_p>abs(m/sds))))/K
 
 # 95% CI for m with permutation approach
-m-quantiles[1]*sd
-m-quantiles[7]*sd
+m-quantiles[1]*sds
+m-quantiles[7]*sds
