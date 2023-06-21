@@ -1,4 +1,4 @@
-library(smcure) # for the data
+library(smcure) # for getting the data
 library(bpcp)   # for the test for difference of survival probabilities 
 
 #####################################################################
