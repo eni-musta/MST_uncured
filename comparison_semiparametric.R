@@ -487,7 +487,7 @@ cure_prob2=est_res$p2
 cure_prob_CI2=est_res$p_CI_2
 
 cure_prob1-cure_prob2  # difference in conditional cure probabilities
-cure_prob_CI1-cure_prob_CI2[,c(2,1)]  # confidence interval for difference
+est_res$p_CI  # confidence interval for difference
 
 m=est_res$m
 
